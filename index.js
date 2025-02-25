@@ -18,7 +18,7 @@ connectDB();
 const app = express();
 
 app.set("trust proxy", true);
-const router = express.Router();
+
 // إعداد CORS ليتناسب مع الاستضافة
 app.use(
   cors({
@@ -39,9 +39,11 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/sessions", sessionRoutes);
 
+// Route لاختبار الباك‌اند
 router.get("/health-check", (req, res) => {
   res.status(200).json({ message: "Backend is running fine 🚀" });
 });
+app.use("/api", router); // ربط الروتر مع التطبيق
 
 // التعامل مع الأخطاء
 app.use((err, req, res, next) => {
