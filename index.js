@@ -40,6 +40,9 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/sessions", sessionRoutes);
 
 
+app.get("/health-check", (req, res) => {
+  res.status(200).json({ message: "Backend is running fine 🚀" });
+});
 
 // التعامل مع الأخطاء
 app.use((err, req, res, next) => {
