@@ -11,7 +11,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import sessionRoutes from "./routes/sessionRoutes.js";
 
 dotenv.config();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT;
 
 connectDB();
 
