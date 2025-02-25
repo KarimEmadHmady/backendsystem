@@ -44,6 +44,8 @@ app.get("/health-check", (req, res) => {
   res.status(200).json({ message: "Backend is running fine 🚀" });
 });
 
+console.log("🚀 Server is running on Vercel");
+
 // التعامل مع الأخطاء
 app.use((err, req, res, next) => {
   console.error(err.stack);
