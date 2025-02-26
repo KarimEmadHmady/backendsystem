@@ -22,7 +22,7 @@ app.set("trust proxy", true);
 // إعداد CORS ليتناسب مع الاستضافة
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173", // استخدم الرابط الفعلي بعد الرفع
+    origin: process.env.FRONTEND_URL || "https://system-v1.netlify.app", // استخدم الرابط الفعلي بعد الرفع
     credentials: true,
   })
 );
