@@ -11,7 +11,7 @@ import {
   updateUserById,
 } from "../controllers/userController.js";
 
-import { authenticate, authorizeAdmin , protect } from "../middlewares/authMiddleware.js";
+import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -28,6 +28,8 @@ router
 });
 
 
+
+
 router.post("/logout", logoutCurrentUser);
 
 
@@ -35,7 +37,7 @@ router.post("/logout", logoutCurrentUser);
 router
   .route("/profile")
   .get(authenticate, getCurrentUserProfile)
-  .put(authenticate, updateCurrentUserProfile) , protect;
+  .put(authenticate, updateCurrentUserProfile)
 
 // ADMIN ROUTES 
 router

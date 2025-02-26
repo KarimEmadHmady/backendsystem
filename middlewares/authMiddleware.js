@@ -2,61 +2,44 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import asyncHandler from "./asyncHandler.js";
 
+// ✅ دالة التحقق من المستخدم (المصادقة)
 const authenticate = asyncHandler(async (req, res, next) => {
-  let token = req.cookies.jwt;
-
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      const currentTime = Math.floor(Date.now() / 1000);
-      if (decoded.exp < currentTime) {
-        res.clearCookie("jwt"); 
-        res.status(401);
-        throw new Error("Session expired. Please log in again.");
-      }
-
-      req.user = await User.findById(decoded.userId).select("-password");
-      
-      next();
-    } catch (error) {
-      res.clearCookie("jwt"); 
-      res.status(401);
-      throw new Error("Not authorized, token failed.");
-    }
-  } else {
-    res.status(401);
-    throw new Error("Not authorized, no token.");
-  }
-});
- 
-const authorizeAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
-    next();
-  } else {
-    res.status(401).send("Not authorized as an admin.");
-  }
-};
-
-
-const protect = (req, res, next) => {
-  const token = req.cookies.jwt;
+  let token = req.cookies && req.cookies.jwt;
+  console.log("Cookies:", req.cookies); // ✅ للتأكد من استقبال الكوكيز
 
   if (!token) {
-    return res.status(401).json({ message: "Session expired, please log in again" });
+    return res.status(401).json({ message: "Not authorized, no token." });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    req.user = await User.findById(decoded.userId).select("-password");
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found." });
+    }
+
     next();
   } catch (error) {
-    res.clearCookie("jwt"); 
-    res.status(401).json({ message: "Session expired, please log in again" });
+    res.clearCookie("jwt"); // ✅ حذف الكوكيز فقط لو فشل التحقق
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Session expired. Please log in again." });
+    } else if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token. Please log in again." });
+    }
+
+    return res.status(401).json({ message: "Not authorized, token failed." });
+  }
+});
+
+// ✅ دالة التحقق من صلاحيات الأدمن
+const authorizeAdmin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).json({ message: "Not authorized as an admin." }); 
   }
 };
 
-export default protect;
-
-
-export { authenticate, authorizeAdmin , protect };
+export { authenticate, authorizeAdmin };
