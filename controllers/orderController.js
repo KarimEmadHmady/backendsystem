@@ -22,7 +22,7 @@
       console.log("Order request body:", req.body);
       console.log("User ID:", req.user ? req.user._id : "User not authenticated");
   
-      const { orderItems, shippingAddress, paymentMethod } = req.body;
+      const { orderItems, shippingAddress } = req.body;
   
       if (!req.user) {
         return res.status(401).json({ error: "User not authenticated" });
@@ -105,7 +105,6 @@
         orderItems: dbOrderItems,
         user: req.user._id,
         shippingAddress,
-        paymentMethod,
         itemsPrice,
         totalPrice,
       });

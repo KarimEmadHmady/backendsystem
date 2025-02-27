@@ -221,34 +221,6 @@ const filterProducts = asyncHandler(async (req, res) => {
   }
 });
 
-// const updateBrandBySerialNumber = asyncHandler(async (req, res) => {
-//   try {
-
-
-//     const { serialnumber, brand } = req.body;
-
-//     if (!serialnumber) {
-//       return res.status(400).json({ error: "Serial number is required" });
-//     }
-//     if (!brand) {
-//       return res.status(400).json({ error: "Brand is required" });
-//     }
-
-//     const product = await Product.findOne({ serialnumber });
-    
-//     if (!product) {
-//       return res.status(404).json({ error: "Product not found" });
-//     }
-    
-//     product.brand = brand;
-//     await product.save();
-//     console.log(req.body);
-//     res.json({ message: "Brand updated successfully", product });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// });
 
 const updateBrandBySerialNumber = asyncHandler(async (req, res) => {
   try {

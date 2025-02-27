@@ -22,7 +22,6 @@ const orderSchema = mongoose.Schema(
       city: { type: String, required: true },
       country: { type: String, required: true },
     },
-    paymentMethod: { type: String, required: true },
 
     itemsPrice: { type: Number, required: true, default: 0.0 },
 
