@@ -12,7 +12,7 @@ const createToken = (res, userId) => {
   res.cookie("jwt", token, {
     httpOnly: true,
     secure: true,
-    sameSite: "Lax",
+    sameSite: "none",
     maxAge: 10 * 60 * 60 * 1000, 
   });
 };
