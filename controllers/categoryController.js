@@ -6,13 +6,13 @@ const createCategory = asyncHandler(async (req, res) => {
     const { name } = req.body;
 
     if (!name) {
-      return res.json({ error: "Name is required" });
+      return res.json({ error: "الاسم مطلوب" });
     }
 
     const existingCategory = await Category.findOne({ name });
 
     if (existingCategory) {
-      return res.json({ error: "Already exists" });
+      return res.json({ error: "موجود بالفعل" });
     }
 
     const category = await new Category({ name }).save();
@@ -31,7 +31,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     const category = await Category.findOne({ _id: categoryId });
 
     if (!category) {
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ error: "لم يتم العثور على الفئة" });
     }
 
     category.name = name;
@@ -40,7 +40,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     res.json(updatedCategory);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "خطأ في الخادم " });
   }
 });
 
@@ -49,12 +49,12 @@ const removeCategory = asyncHandler(async (req, res) => {
   try {
     const removed = await Category.findByIdAndDelete(req.params.categoryId);
     if (!removed) {
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ error: "لم يتم العثور على الفئة" });
     }
-    res.json({ message: "Category removed successfully", removed });
+    res.json({ message: "تمت إزالة الفئة بنجاح", removed });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: " خطأ في الخادم  " });
   }
 });
 

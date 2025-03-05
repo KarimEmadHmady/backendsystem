@@ -10,7 +10,6 @@ import {
   fetchProducts,
   fetchProductById,
   fetchAllProducts,
-  // addProductReview,
   fetchTopProducts,
   fetchNewProducts,
   filterProducts,
@@ -27,7 +26,6 @@ router
   .post(authenticate, authorizeAdmin, formidable(), addProduct);
 
 router.route("/allproducts").get(fetchAllProducts);
-// router.route("/:id/reviews").post(authenticate, checkId, addProductReview);
 
 router.get("/top", fetchTopProducts);
 router.get("/new", fetchNewProducts);

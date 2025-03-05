@@ -9,11 +9,11 @@ const createUser = asyncHandler(async (req, res) => {
   const { username, email, password, location, userImage } = req.body;
 
   if (!username || !email || !password) {
-    throw new Error("Please fill all the inputs.");
+    throw new Error("يرجى ملء جميع المدخلات.");
   }
 
   const userExists = await User.findOne({ email });
-  if (userExists) res.status(400).send("User already exists");
+  if (userExists) res.status(400).send("المستخدم موجود بالفعل");
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -33,7 +33,7 @@ const createUser = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     res.status(400);
-    throw new Error("Invalid user data");
+    throw new Error("بيانات المستخدم غير صالحة");
   }
 });
 
@@ -69,11 +69,11 @@ const loginUser = async (req, res) => {
         image,
       });
     } else {
-      res.status(401).json({ message: "Invalid email or password" });
+      res.status(401).json({ message: "البريد الإلكتروني أو كلمة المرور غير صالحة" });
     }
   } catch (err) {
-    console.error("🔴 Error in loginUser:", err);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("🔴 خطأ في تسجيل الدخول للمستخدم:", err);
+    res.status(500).json({ message: "خطأ في الخادم " });
   }
 };
 
@@ -105,7 +105,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error("لم يتم العثور على المستخدم");
   }
 });
 
@@ -116,7 +116,7 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
     expires: new Date(0),
   });
 
-  res.status(200).json({ message: "Logged out successfully" });
+  res.status(200).json({ message: "تم تسجيل الخروج بنجاح" });
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
@@ -138,7 +138,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not found.");
+    throw new Error("لم يتم العثور على المستخدم.");
   }
 });
 
@@ -151,14 +151,14 @@ const deleteUserById = asyncHandler(async (req, res) => {
   if (user) {
     if (user.isAdmin) {
       res.status(400);
-      throw new Error("Cannot delete admin user");
+      throw new Error("لا يمكن حذف مستخدم المسؤول");
     }
 
     await User.deleteOne({ _id: user._id });
-    res.json({ message: "User removed" });
+    res.json({ message: "تم إزالة المستخدم" });
   } else {
     res.status(404);
-    throw new Error("User not found.");
+    throw new Error("لم يتم العثور على المستخدم.");
   }
 });
 
@@ -169,7 +169,7 @@ const getUserById = asyncHandler(async (req, res) => {
     res.json(user);
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error("لم يتم العثور على المستخدم");
   }
 });
 
@@ -191,7 +191,7 @@ const updateUserById = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error("لم يتم العثور على المستخدم");
   }
 });
 

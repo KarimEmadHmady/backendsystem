@@ -19,17 +19,17 @@
 
   const createOrder = async (req, res) => {
     try {
-      console.log("Order request body:", req.body);
-      console.log("User ID:", req.user ? req.user._id : "User not authenticated");
+      // console.log("Order request body:", req.body);
+      // console.log("User ID:", req.user ? req.user._id : "User not authenticated");
   
       const { orderItems, shippingAddress } = req.body;
   
       if (!req.user) {
-        return res.status(401).json({ error: "User not authenticated" });
+        return res.status(401).json({ error: "المستخدم ليس له صلاحية دخول" });
       }
   
       if (!orderItems || orderItems.length === 0) {
-        return res.status(400).json({ error: "No order items" });
+        return res.status(400).json({ error: "لا يوجد عناصر مطلوبة" });
       }
   
       const itemsFromDB = await Product.find({
@@ -42,7 +42,7 @@
         );
   
         if (!matchingItemFromDB) {
-          throw new Error(`Product not found: ${itemFromClient.product}`);
+          throw new Error(`لم يتم العثور على المنتج: ${itemFromClient.product}`);
         }
   
         return {
@@ -190,7 +190,7 @@
         res.json(order);
       } else {
         res.status(404);
-        throw new Error("Order not found");
+        throw new Error("لم يتم العثور على الطلب");
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -215,7 +215,7 @@
         res.status(200).json(updateOrder);
       } else {
         res.status(404);
-        throw new Error("Order not found");
+        throw new Error("لم يتم العثور على الطلب");
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -234,7 +234,7 @@
         res.json(updatedOrder);
       } else {
         res.status(404);
-        throw new Error("Order not found");
+        throw new Error("لم يتم العثور على الطلب");
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -246,11 +246,11 @@
       const order = await Order.findById(req.params.id);
   
       if (!order) {
-        return res.status(404).json({ error: "Order not found" });
+        return res.status(404).json({ error: "لم يتم العثور على الطلب" });
       }
   
       await order.deleteOne(); 
-      res.status(200).json({ message: "Order deleted successfully" });
+      res.status(200).json({ message: "تم حذف الطلب بنجاح" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -259,7 +259,7 @@
   const deleteAllOrders = async (req, res) => {
     try {
       await Order.deleteMany({}); 
-      res.status(200).json({ message: "All orders deleted successfully" });
+      res.status(200).json({ message: "تم حذف جميع الطلبات بنجاح" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
