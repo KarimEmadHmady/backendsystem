@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 router.delete("/clear", async (req, res) => {
   try {
     await Session.deleteMany({});
-    res.json({ message: "All sessions have been cleared successfully!" });
+    res.json({ message: "تم مسج جميع تسجيلات المستخدمين!" });
   } catch (error) {
     console.error("🔴 Error deleting sessions:", error);
     res.status(500).json({ message: "Internal server error" });
