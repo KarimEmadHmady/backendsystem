@@ -3,7 +3,7 @@ import Product from "../models/productModel.js";
 
 const addProduct = asyncHandler(async (req, res) => {
   try {
-    const { name, serialnumber, price, category, quantity} = req.fields; 
+    const { name, serialnumber, price, category} = req.fields;  
 
     // Validation
     switch (true) {
@@ -15,8 +15,6 @@ const addProduct = asyncHandler(async (req, res) => {
         return res.json({ error: "السعر مطلوب" });
       case !category:
         return res.json({ error: "الكاتيجرى مطلوب" });
-      case !quantity:
-        return res.json({ error: "الكمية المطلوبة" });
     }
 
     const product = new Product({ ...req.fields });
@@ -30,7 +28,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
-    const { name, serialnumber, price, category, quantity } = req.fields; 
+    const { name, serialnumber, price, category } = req.fields;  
 
     // Validation
     switch (true) {
@@ -42,8 +40,7 @@ const updateProductDetails = asyncHandler(async (req, res) => {
         return res.json({ error: "السعر مطلوب" });
       case !category:
         return res.json({ error: "الكاتيجرى مطلوب" });
-      case !quantity:
-        return res.json({ error: "الكمية المطلوبة" });
+
     }
 
     const product = await Product.findByIdAndUpdate(
@@ -132,9 +129,10 @@ const fetchProductById = asyncHandler(async (req, res) => {
 const fetchAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find({})
-      .populate("category")
+      .populate("category" , "name")
       .limit(12)
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
+      console.log("📌 المنتجات المسترجعة:", products); // تحقق من البيانات هنا
 
     res.json(products);
   } catch (error) {
