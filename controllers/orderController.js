@@ -73,7 +73,8 @@
         text: `
         🎉 Hi Dear,
       
-        Your order has been successfully placed. Here are the details:
+        Your order has been successfully placed.
+        Here are the details:
       
         📅 Order Date & Time: ${orderDate}  
         💰 Order Total: ${req.body.totalPrice} EGP  
@@ -88,7 +89,7 @@
       
         🚀 Thank you for choosing us!  
         Best regards,  
-        Your Company Name
+        TurboTech
         `,
       };
       
