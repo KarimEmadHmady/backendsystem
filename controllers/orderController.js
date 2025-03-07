@@ -273,7 +273,7 @@
     getUserOrders,
     countTotalOrders,
     calculateTotalSales,
-    calcualteTotalSalesByDate,
+    calculateTotalSalesByDate,
     findOrderById,
     markOrderAsPaid,
     markOrderAsDelivered,
