@@ -28,7 +28,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
-    const { name, serialnumber, price, category } = req.fields;  // req.fields;  
+    const { name, serialnumber, price, category } = req.fields;  
 
     // Validation
     switch (true) {
@@ -45,7 +45,7 @@ const updateProductDetails = asyncHandler(async (req, res) => {
 
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      { ...req.fields },  // .fields
+      { ...req.fields },  
       { new: true, runValidators: true }
     );
 
