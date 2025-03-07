@@ -33,7 +33,7 @@ router.get("/new", fetchNewProducts);
 router
   .route("/:id")
   .get(fetchProductById)
-  .put(authenticate, authorizeAdmin, updateProductDetails)
+  .put(authenticate, authorizeAdmin,updateProductDetails) //  formidable(), 
   .delete(authenticate, authorizeAdmin, removeProduct);
 
 
