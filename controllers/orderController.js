@@ -156,29 +156,25 @@
     }
   };
 
-  const calculateTotalSalesByDate= async (req, res) => {
+  const calculateTotalSalesByDate = async (req, res) => {
     try {
       const salesByDate = await Order.aggregate([
         {
-          $match: {
-            isPaid: true,
-          },
-        },
-        {
           $group: {
             _id: {
-              $dateToString: { format: "%Y-%m-%d", date: "$paidAt" },
+              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }, // تغيير الحقل إلى createdAt
             },
             totalSales: { $sum: "$totalPrice" },
           },
         },
       ]);
-
+  
       res.json(salesByDate);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   };
+  
 
   const findOrderById = async (req, res) => {
     try {
