@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 import Session from "../models/Session.js";
 
-
 const createUser = asyncHandler(async (req, res) => {
   const { username, email, password, location, userImage } = req.body;
 
@@ -17,7 +16,13 @@ const createUser = asyncHandler(async (req, res) => {
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  const newUser = new User({ username, email, password: hashedPassword, location, userImage });
+  const newUser = new User({
+    username,
+    email,
+    password: hashedPassword,
+    location,
+    userImage,
+  });
 
   try {
     await newUser.save();
@@ -37,7 +42,6 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 const loginUser = async (req, res) => {
   const { email, password, location, image } = req.body;
 
@@ -50,8 +54,8 @@ const loginUser = async (req, res) => {
       const session = new Session({
         user: user._id,
         ip: userIP,
-        username: user.username, 
-        email: user.email, 
+        username: user.username,
+        email: user.email,
         location,
         userImage: image,
       });
@@ -69,14 +73,15 @@ const loginUser = async (req, res) => {
         image,
       });
     } else {
-      res.status(401).json({ message: "البريد الإلكتروني أو كلمة المرور غير صالحة" });
+      res
+        .status(401)
+        .json({ message: "البريد الإلكتروني أو كلمة المرور غير صالحة" });
     }
   } catch (err) {
     console.error("🔴 خطأ في تسجيل الدخول للمستخدم:", err);
     res.status(500).json({ message: "خطأ في الخادم " });
   }
 };
-
 
 const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -109,7 +114,6 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
 const logoutCurrentUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httyOnly: true,
@@ -128,22 +132,21 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    const sessions = await Session.find({ user: user._id }).sort({ loginTime: -1 });
+    const sessions = await Session.find({ user: user._id }).sort({
+      loginTime: -1,
+    });
 
     res.json({
       _id: user._id,
       username: user.username,
       email: user.email,
-      sessions, 
+      sessions,
     });
   } else {
     res.status(404);
     throw new Error("لم يتم العثور على المستخدم.");
   }
 });
-
-
-
 
 const deleteUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);

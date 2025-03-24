@@ -27,12 +27,13 @@ router.route("/mine").get(authenticate, getUserOrders);
 router.route("/total-orders").get(countTotalOrders);
 router.route("/total-sales").get(calculateTotalSales);
 router.route("/total-sales-by-date").get(calculateTotalSalesByDate);
-router.route("/:id").get(authenticate, findOrderById).delete(authenticate, authorizeAdmin, deleteOrder);
+router
+  .route("/:id")
+  .get(authenticate, findOrderById)
+  .delete(authenticate, authorizeAdmin, deleteOrder);
 router.route("/:id/pay").put(authenticate, markOrderAsPaid);
 router
   .route("/:id/deliver")
   .put(authenticate, authorizeAdmin, markOrderAsDelivered);
 
 export default router;
-
-

@@ -13,16 +13,15 @@ import {
   fetchTopProducts,
   fetchNewProducts,
   filterProducts,
-  updateBrandBySerialNumber
+  updateBrandBySerialNumber,
 } from "../controllers/productController.js";
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
-import checkId from "../middlewares/checkId.js";
 
 router.route("/update-brand").put(authenticate, updateBrandBySerialNumber);
 
 router
   .route("/")
-  .get(authenticate, fetchProducts) 
+  .get(authenticate, fetchProducts)
   .post(authenticate, authorizeAdmin, formidable(), addProduct);
 
 router.route("/allproducts").get(fetchAllProducts);
@@ -33,10 +32,8 @@ router.get("/new", fetchNewProducts);
 router
   .route("/:id")
   .get(fetchProductById)
-  .put(authenticate, authorizeAdmin, formidable(), updateProductDetails) //  
+  .put(authenticate, authorizeAdmin, formidable(), updateProductDetails) //
   .delete(authenticate, authorizeAdmin, removeProduct);
-
-
 
 router.route("/filtered-products").post(filterProducts);
 

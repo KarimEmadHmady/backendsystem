@@ -44,7 +44,6 @@ const updateCategory = asyncHandler(async (req, res) => {
   }
 });
 
-
 const removeCategory = asyncHandler(async (req, res) => {
   try {
     const removed = await Category.findByIdAndDelete(req.params.categoryId);
@@ -57,7 +56,6 @@ const removeCategory = asyncHandler(async (req, res) => {
     res.status(500).json({ error: " خطأ في الخادم  " });
   }
 });
-
 
 const listCategory = asyncHandler(async (req, res) => {
   try {

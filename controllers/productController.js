@@ -3,7 +3,7 @@ import Product from "../models/productModel.js";
 
 const addProduct = asyncHandler(async (req, res) => {
   try {
-    const { name, serialnumber, price, category} = req.fields;  
+    const { name, serialnumber, price, category } = req.fields;
 
     // Validation
     switch (true) {
@@ -28,7 +28,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
-    const { name, serialnumber, price, category } = req.fields;  
+    const { name, serialnumber, price, category } = req.fields;
 
     // Validation
     switch (true) {
@@ -40,12 +40,11 @@ const updateProductDetails = asyncHandler(async (req, res) => {
         return res.json({ error: "السعر مطلوب" });
       case !category:
         return res.json({ error: "الكاتيجرى مطلوب" });
-
     }
 
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      { ...req.fields },  
+      { ...req.fields },
       { new: true, runValidators: true }
     );
 
@@ -68,11 +67,8 @@ const removeProduct = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 const fetchProducts = asyncHandler(async (req, res) => {
   try {
-    
     const pageSize = 6;
     const page = Number(req.query.pageNumber) || 1;
 
@@ -87,7 +83,7 @@ const fetchProducts = asyncHandler(async (req, res) => {
 
     const count = await Product.countDocuments({
       ...keyword,
-      distributor: req.user._id, 
+      distributor: req.user._id,
     });
 
     const products = await Product.find({
@@ -95,7 +91,7 @@ const fetchProducts = asyncHandler(async (req, res) => {
       distributor: req.user._id,
     })
       .limit(pageSize)
-      .skip(pageSize * (page - 1)); 
+      .skip(pageSize * (page - 1));
 
     res.json({
       products,
@@ -108,8 +104,6 @@ const fetchProducts = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "حدث خطأ في السيرفر" });
   }
 });
-
-
 
 const fetchProductById = asyncHandler(async (req, res) => {
   try {
@@ -129,10 +123,10 @@ const fetchProductById = asyncHandler(async (req, res) => {
 const fetchAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find({})
-      .populate("category" , "name")
+      .populate("category", "name")
       .limit(12)
       .sort({ createdAt: -1 });
-      console.log("📌 المنتجات المسترجعة:", products); // تحقق من البيانات هنا
+    console.log("📌 المنتجات المسترجعة:", products);
 
     res.json(products);
   } catch (error) {
@@ -140,7 +134,6 @@ const fetchAllProducts = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 });
-
 
 const fetchTopProducts = asyncHandler(async (req, res) => {
   try {
@@ -178,7 +171,6 @@ const filterProducts = asyncHandler(async (req, res) => {
   }
 });
 
-
 const updateBrandBySerialNumber = asyncHandler(async (req, res) => {
   try {
     const { serialnumber, brand } = req.body;
@@ -197,7 +189,7 @@ const updateBrandBySerialNumber = asyncHandler(async (req, res) => {
     }
 
     product.brand = brand;
-    product.distributor = req.user._id; 
+    product.distributor = req.user._id;
     await product.save();
 
     res.json({ message: "تم اضافة المنتج و البراند بنجاح", product });
@@ -206,7 +198,6 @@ const updateBrandBySerialNumber = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 export {
   addProduct,

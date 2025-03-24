@@ -9,18 +9,17 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "uploads",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"], 
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
   },
 });
 
 const upload = multer({ storage });
 
-
 router.post("/", upload.single("image"), (req, res) => {
   if (req.file && req.file.path) {
     res.status(200).send({
       message: "Image uploaded successfully",
-      imageUrl: req.file.path, 
+      imageUrl: req.file.path,
     });
   } else {
     res.status(400).send({ message: "No image uploaded" });

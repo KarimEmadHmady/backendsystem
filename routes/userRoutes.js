@@ -20,26 +20,20 @@ router
   .post(createUser)
   .get(authenticate, authorizeAdmin, getAllUsers);
 
-  router.post("/auth", (req, res) => {
-    const { email, password, location, image } = req.body; 
-    
+router.post("/auth", (req, res) => {
+  const { email, password, location, image } = req.body;
 
-    loginUser({ body: { email, password, location, image } }, res);
+  loginUser({ body: { email, password, location, image } }, res);
 });
 
-
-
-
 router.post("/logout", logoutCurrentUser);
-
-
 
 router
   .route("/profile")
   .get(authenticate, getCurrentUserProfile)
-  .put(authenticate, updateCurrentUserProfile)
+  .put(authenticate, updateCurrentUserProfile);
 
-// ADMIN ROUTES 
+// ADMIN ROUTES
 router
   .route("/:id")
   .delete(authenticate, authorizeAdmin, deleteUserById)
